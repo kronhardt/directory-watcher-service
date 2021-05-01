@@ -1,0 +1,6 @@
+env:
+  homepath: HOME
+
+directory:
+  entrance: /data/in
+  output: /data/out/
