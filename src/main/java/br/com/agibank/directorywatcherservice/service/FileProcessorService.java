@@ -27,10 +27,10 @@ import static br.com.agibank.directorywatcherservice.util.ValidationsUtil.*;
 @Service
 public class FileProcessorService {
 
+    private SalesReport salesReport;
     private final String enviromentHomePath;
     private final String directoryEntrance;
     private final String directoryOutput;
-    private final SalesReport salesReport;
     private final ReportService reportService;
     private final SalesmanMapper salesmanMapper;
     private final CustomerMapper customerMapper;
@@ -48,7 +48,6 @@ public class FileProcessorService {
     private FileProcessorService(@Value("${env.homepath}") String enviromentHomePath,
                                  @Value("${directory.entrance}") String directoryEntrance,
                                  @Value("${directory.output}") String directoryOutput,
-                                 @Autowired SalesReport salesReport,
                                  @Autowired ReportService reportService,
                                  @Autowired SalesmanMapper salesmanMapper,
                                  @Autowired CustomerMapper customerMapper,
@@ -56,7 +55,6 @@ public class FileProcessorService {
         this.enviromentHomePath = enviromentHomePath;
         this.directoryEntrance = directoryEntrance;
         this.directoryOutput = directoryOutput;
-        this.salesReport = salesReport;
         this.reportService = reportService;
         this.salesmanMapper = salesmanMapper;
         this.customerMapper = customerMapper;
@@ -78,6 +76,7 @@ public class FileProcessorService {
     public void fileProcessor(File file) {
         if (isFileExtensionExpected(file.getName(), DAT_EXTENSION)) {
             try {
+                salesReport = new SalesReport();
                 readFile(file.getAbsolutePath());
                 reportService.createSalesReport(file.getName(), salesReport);
             } catch (Exception e) {

@@ -2,17 +2,20 @@ package br.com.agibank.directorywatcherservice.domain;
 
 import org.springframework.stereotype.Component;
 
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 @Component
 public class SalesReport {
 
-    private final List<Salesman> salesmans = new LinkedList<>();
-    private final List<Customer> customers = new LinkedList<>();
-    private final List<Sale> sales = new LinkedList<>();
+    private final List<Salesman> salesmans;
+    private final List<Customer> customers;
+    private final List<Sale> sales;
+
+    public SalesReport() {
+        this.salesmans =  new ArrayList<>();
+        this.customers = new ArrayList<>();
+        this.sales =  new ArrayList<>();
+    }
 
     public Integer countCustomer(){
         return customers.size();
@@ -29,10 +32,10 @@ public class SalesReport {
                 .orElseThrow(NoSuchElementException::new);
     }
 
-    public Long getLowestSale() {
+    public String getLowestSale() {
         return sales.stream()
                 .min(Comparator.comparing(Sale::getItemsAmount))
-                .map(s -> s.getIdSale())
+                .map(s -> s.getSalesmanName())
                 .orElseThrow(NoSuchElementException::new);
     }
 
