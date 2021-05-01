@@ -6,10 +6,6 @@ public class ValidationsUtil {
         return fileName.toLowerCase().endsWith(fileExtension);
     }
 
-    public static boolean isEntryCreateEvent(String name) {
-        return name.equals("ENTRY_CREATE");
-    }
-
     public static boolean isValidCpf(String cpf) {
         return cpf.length() == 11;
     }

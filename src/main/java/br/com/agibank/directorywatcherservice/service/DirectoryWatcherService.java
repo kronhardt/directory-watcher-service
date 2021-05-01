@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.nio.file.*;
 
-import static br.com.agibank.directorywatcherservice.util.ValidationsUtil.*;
 import static java.nio.file.StandardWatchEventKinds.ENTRY_CREATE;
 
 import java.util.HashMap;
@@ -23,7 +22,6 @@ public class DirectoryWatcherService {
     private final WatchService watcherService;
     private final Map<WatchKey,Path> keys;
     private final Logger logger;
-    private final static String DAT_EXTENSION = ".dat";
     private FileProcessorService fileProcessorService;
 
     @Autowired
@@ -56,11 +54,7 @@ public class DirectoryWatcherService {
                 Path fileName = watchEvent.context();
                 Path pathWithFileName = path.resolve(fileName);
                 logger.info("Recebido evento {}: {}", event.kind().name(), pathWithFileName);
-                if (isEntryCreateEvent(event.kind().name()) && isFileExtensionExpected(pathWithFileName.toString(), DAT_EXTENSION)) {
-                    fileProcessorService.fileProcessor(pathWithFileName.toFile());
-                } else {
-                    logger.info("{} não é um evento válido, descartando...", event.kind().name());
-                }
+                fileProcessorService.fileProcessor(pathWithFileName.toFile());
             }
             if (!key.reset()) {
                 keys.remove(key);
