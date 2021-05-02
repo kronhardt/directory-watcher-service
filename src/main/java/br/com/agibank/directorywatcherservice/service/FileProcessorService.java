@@ -111,7 +111,7 @@ public class FileProcessorService {
                 }
             }
         } catch (Exception e) {
-            logger.error("Ocorreu um erro inesperado ao processar o arquivo {}: ", fileName, e);
+            logger.error("Ocorreu um erro inesperado tentar ler o arquivo {}: ", fileName, e);
         }
     }
 
@@ -126,7 +126,7 @@ public class FileProcessorService {
                 }
             }
         } else {
-            logger.error("Dados na linha {} fora do padrão esperado, descartando...", matcher.group(0));
+            logger.error("Dados da linha fora do padrão esperado, descartando...");
         }
         return extractedDataRow;
     }

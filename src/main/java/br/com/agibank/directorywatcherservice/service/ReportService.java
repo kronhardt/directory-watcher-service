@@ -19,7 +19,7 @@ public class ReportService {
     private final String directoryOutput;
     private final String enviromentHomePath;
 
-    private ReportService(@Value("${directory.output}") String directoryOutput,
+    public ReportService(@Value("${directory.output}") String directoryOutput,
                           @Value("${env.homepath}") String enviromentHomePath) {
         this.directoryOutput = directoryOutput;
         this.enviromentHomePath = enviromentHomePath;
@@ -27,15 +27,10 @@ public class ReportService {
 
     public void createSalesReport(String fileName, SalesReport salesReport) {
         String path = System.getenv(enviromentHomePath).concat(directoryOutput);
-        PrintWriter writer = null;
-        try {
-            File dir = new File(path);
-            if (!dir.exists()) {
-                dir.mkdir();
-            }
-            String fullPath = path + fileName.replace(".dat", ".done.dat");
-            logger.info("Exportando análise dos dados de vendas para: {}", fullPath);
-            writer = new PrintWriter(fullPath);
+        createdDirectoryIfNotExist(path);
+        String fullPath = path + fileName.replace(".dat", ".done.dat");
+        logger.info("Exportando análise dos dados de vendas para: {}", fullPath);
+        try (PrintWriter writer = new PrintWriter(fullPath)) {
             String time= new SimpleDateFormat("dd MMM yyyy HH:mm:ss").format(Calendar.getInstance().getTime());
             writer.println(MessageFormat.format("Resultados para {0} - {1}", fullPath, time));
             writer.println("-------------------------------------------------------------------------------------------");
@@ -45,11 +40,14 @@ public class ReportService {
             writer.println(MessageFormat.format("O pior vendedor: {0}", salesReport.getLowestSale()));
         } catch (Exception e) {
             logger.error("Ocorreu um erro ao exportar arquivo de análise de vendas ", e);
-        } finally {
-            if (writer != null) {
-                writer.close();
-            }
-            logger.info("Arquivo de análise de vendas exportado com sucesso.");
+        }
+        logger.info("Arquivo de análise de vendas exportado com sucesso.");
+    }
+
+    private void createdDirectoryIfNotExist(String path) {
+        File dir = new File(path);
+        if (!dir.exists()) {
+            dir.mkdir();
         }
     }
 }
