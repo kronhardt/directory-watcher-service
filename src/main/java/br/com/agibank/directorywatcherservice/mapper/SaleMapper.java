@@ -31,7 +31,7 @@ public class SaleMapper {
     private Item build(String sale) {
         String[] saleAttributes = sale.split("-");
         return Item.builder()
-                .idItem(saleAttributes[0])
+                .idItem(Long.valueOf(saleAttributes[0]))
                 .quantity(Double.valueOf(saleAttributes[1]))
                 .price(Double.valueOf(saleAttributes[2]))
                 .build();

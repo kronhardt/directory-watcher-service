@@ -2,13 +2,11 @@ package br.com.agibank.directorywatcherservice.domain;
 
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
-
 @Component
 public class Salesman {
     private String cpf;
     private String name;
-    private BigDecimal salary;
+    private Double salary;
 
     public String getCpf() {
         return cpf;
@@ -26,11 +24,11 @@ public class Salesman {
         this.name = name;
     }
 
-    public BigDecimal getSalary() {
+    public Double getSalary() {
         return salary;
     }
 
-    public void setSalary(BigDecimal salary) {
+    public void setSalary(Double salary) {
         this.salary = salary;
     }
 
@@ -51,7 +49,7 @@ public class Salesman {
             return this;
         }
 
-        public Builder salary(BigDecimal salary) {
+        public Builder salary(Double salary) {
             salesman.setSalary(salary);
             return this;
         }

@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Component
@@ -17,7 +16,7 @@ public class SalesmanMapper {
         return Salesman.builder()
                 .cpf(extractedDataRow.get(0))
                 .name(extractedDataRow.get(1))
-                .salary(new BigDecimal(extractedDataRow.get(2)))
+                .salary(Double.valueOf(extractedDataRow.get(2)))
                 .build();
     }
 }

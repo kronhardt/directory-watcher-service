@@ -4,15 +4,15 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class Item {
-    private String idItem;
+    private Long idItem;
     private Double quantity;
     private Double price;
 
-    public String getIdItem() {
+    public Long getIdItem() {
         return idItem;
     }
 
-    public void setIdItem(String idItem) {
+    public void setIdItem(Long idItem) {
         this.idItem = idItem;
     }
 
@@ -43,7 +43,7 @@ public class Item {
 
         private Builder() { item = new Item(); }
 
-        public Builder idItem(String idItem) {
+        public Builder idItem(Long idItem) {
             item.setIdItem(idItem);
             return this;
         }
