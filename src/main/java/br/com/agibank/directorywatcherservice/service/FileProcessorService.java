@@ -30,7 +30,6 @@ public class FileProcessorService {
     private SalesReport salesReport;
     private final String enviromentHomePath;
     private final String directoryEntrance;
-    private final String directoryOutput;
     private final ReportService reportService;
     private final SalesmanMapper salesmanMapper;
     private final CustomerMapper customerMapper;
@@ -47,14 +46,12 @@ public class FileProcessorService {
     @Autowired
     private FileProcessorService(@Value("${env.homepath}") String enviromentHomePath,
                                  @Value("${directory.entrance}") String directoryEntrance,
-                                 @Value("${directory.output}") String directoryOutput,
                                  @Autowired ReportService reportService,
                                  @Autowired SalesmanMapper salesmanMapper,
                                  @Autowired CustomerMapper customerMapper,
                                  @Autowired SaleMapper saleMapper) {
         this.enviromentHomePath = enviromentHomePath;
         this.directoryEntrance = directoryEntrance;
-        this.directoryOutput = directoryOutput;
         this.reportService = reportService;
         this.salesmanMapper = salesmanMapper;
         this.customerMapper = customerMapper;
@@ -93,18 +90,24 @@ public class FileProcessorService {
             while ((line = br.readLine()) != null) {
                 if (isSalesman(line)) {
                     List<String> extractedDataRow = getDataRow(line, REGEX_SALESMAN);
-                    Salesman salesman = salesmanMapper.mapFrom(extractedDataRow);
-                    salesReport.addData(salesman);
+                    if (!extractedDataRow.isEmpty()) {
+                        Salesman salesman = salesmanMapper.mapFrom(extractedDataRow);
+                        salesReport.addData(salesman);
+                    }
                 } else if (isCustomer(line)) {
                     List<String> extractedDataRow = getDataRow(line, REGEX_CUSTOMER);
-                    Customer customer = customerMapper.mapFrom(extractedDataRow);
-                    salesReport.addData(customer);
+                    if (!extractedDataRow.isEmpty() ) {
+                        Customer customer = customerMapper.mapFrom(extractedDataRow);
+                        salesReport.addData(customer);
+                    }
                 } else if (isSale(line)) {
                     List<String> extractedDataRow = getDataRow(line, REGEX_SALE_ITEMS);
-                    Sale sale = saleMapper.mapFrom(extractedDataRow);
-                    salesReport.addData(sale);
+                    if (!extractedDataRow.isEmpty()) {
+                        Sale sale = saleMapper.mapFrom(extractedDataRow);
+                        salesReport.addData(sale);
+                    }
                 } else {
-                    logger.error("O identificador {} da linha não é válido, descartando...", line.substring(0, 3));
+                    logger.error("O identificador da linha não é válido, descartando...");
                 }
             }
         } catch (Exception e) {
