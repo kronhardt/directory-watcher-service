@@ -44,12 +44,12 @@ public class FileProcessorService {
             "ÀõãñÕÃÑêûîôâÊÛÎÔÂëÿüïöäËYÜÏÖÄçÇ^ç]{1,})(?:[ç])([A-zA-Z\\sZéúíóáÉÚÍÓÁèùìòàÈÙÌÒÀõãñÕÃÑêûîôâÊÛÎÔÂëÿüïöäËYÜÏÖÄçÇ]{1,})";
 
     @Autowired
-    private FileProcessorService(@Value("${env.homepath}") String enviromentHomePath,
-                                 @Value("${directory.entrance}") String directoryEntrance,
-                                 @Autowired ReportService reportService,
-                                 @Autowired SalesmanMapper salesmanMapper,
-                                 @Autowired CustomerMapper customerMapper,
-                                 @Autowired SaleMapper saleMapper) {
+    public FileProcessorService(@Value("${env.homepath}") String enviromentHomePath,
+                                @Value("${directory.entrance}") String directoryEntrance,
+                                @Autowired ReportService reportService,
+                                @Autowired SalesmanMapper salesmanMapper,
+                                @Autowired CustomerMapper customerMapper,
+                                @Autowired SaleMapper saleMapper) {
         this.enviromentHomePath = enviromentHomePath;
         this.directoryEntrance = directoryEntrance;
         this.reportService = reportService;
@@ -59,7 +59,7 @@ public class FileProcessorService {
     }
 
     @Scheduled(fixedDelay = Long.MAX_VALUE)
-    public void initialFileProcessor() {
+    private void initialFileProcessor() {
         Path path = Paths.get(System.getenv(enviromentHomePath).concat(directoryEntrance));
         File dir = new File(path.toString());
         File[] listFiles = dir.listFiles();
@@ -89,23 +89,11 @@ public class FileProcessorService {
             String line;
             while ((line = br.readLine()) != null) {
                 if (isSalesman(line)) {
-                    List<String> extractedDataRow = getDataRow(line, REGEX_SALESMAN);
-                    if (!extractedDataRow.isEmpty()) {
-                        Salesman salesman = salesmanMapper.mapFrom(extractedDataRow);
-                        salesReport.addData(salesman);
-                    }
+                    processSalesman(line);
                 } else if (isCustomer(line)) {
-                    List<String> extractedDataRow = getDataRow(line, REGEX_CUSTOMER);
-                    if (!extractedDataRow.isEmpty() ) {
-                        Customer customer = customerMapper.mapFrom(extractedDataRow);
-                        salesReport.addData(customer);
-                    }
+                    processCustomer(line);
                 } else if (isSale(line)) {
-                    List<String> extractedDataRow = getDataRow(line, REGEX_SALE_ITEMS);
-                    if (!extractedDataRow.isEmpty()) {
-                        Sale sale = saleMapper.mapFrom(extractedDataRow);
-                        salesReport.addData(sale);
-                    }
+                    processSale(line);
                 } else {
                     logger.error("O identificador da linha não é válido, descartando...");
                 }
@@ -115,7 +103,31 @@ public class FileProcessorService {
         }
     }
 
-    private List<String> getDataRow(String line, String regex) {
+    private void processSalesman(String line) {
+        List<String> extractedDataRow = getDataRow(line, REGEX_SALESMAN);
+        if (!extractedDataRow.isEmpty()) {
+            Salesman salesman = salesmanMapper.mapFrom(extractedDataRow);
+            salesReport.addData(salesman);
+        }
+    }
+
+    private void processCustomer(String line) {
+        List<String> extractedDataRow = getDataRow(line, REGEX_CUSTOMER);
+        if (!extractedDataRow.isEmpty() ) {
+            Customer customer = customerMapper.mapFrom(extractedDataRow);
+            salesReport.addData(customer);
+        }
+    }
+
+    private void processSale(String line) {
+        List<String> extractedDataRow = getDataRow(line, REGEX_SALE_ITEMS);
+        if (!extractedDataRow.isEmpty()) {
+            Sale sale = saleMapper.mapFrom(extractedDataRow);
+            salesReport.addData(sale);
+        }
+    }
+
+    public List<String> getDataRow(String line, String regex) {
         final Pattern pattern = Pattern.compile(regex);
         final Matcher matcher = pattern.matcher(line);
         List<String> extractedDataRow  = new ArrayList<>();
