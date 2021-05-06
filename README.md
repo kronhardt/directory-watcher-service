@@ -15,7 +15,7 @@ Para iniciar o desenvolvimento é necessário clonar o projeto do GitHub.
 
 > git clone https://github.com/kronhardt/directory-watcher-service.git
 
-##Construção(build)
+## Construção(build)
 Para construir o projeto gradle é necessário executar o comando abaixo:
 
 > gradle build
@@ -23,12 +23,12 @@ Para construir o projeto gradle é necessário executar o comando abaixo:
 O comando irá baixar todas as dependências do projeto. Também serão executados todos os testes unitários,
 se algum falhar, o Gradle exibirá essa informação no console.
 
-##Publicação(deploy)
+## Publicação(deploy)
 Para 'startar' o projeto é necessário executar o comando abaixo:
 
 > gradle bootRun
 
-##Configuração
+## Configuração
 A aplicação irá ler os arquivos do diretório configurado na propriedade 'directory.entrance' do application.yml
 e exportar os dados analisados no diretório configurado na propriedade 'directory.output'.
 
@@ -88,7 +88,3 @@ Exemplo de saída gerada:
  ID da venda mais cara: 10
  O pior vendedor: Paulo
 ```
-
-
-##Licença
-
