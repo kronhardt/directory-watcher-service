@@ -39,7 +39,7 @@ Só será processado arquivos com a extensão **.dat**
 
 ## Formatação de linha
 
-Um arquivo contem linhas que podem ser formatadas em 3 tipos de informações:
+Um arquivo contém linhas que podem ser formatadas em 3 tipos de informações:
 
 **Vendedor**
 
@@ -47,6 +47,7 @@ Os dados do vendedor têm o formato id 001 e a linha terá o seguinte formato:
  > 001çCPFçNameçSalary
 
 **Cliente**
+
 Os dados do cliente têm o formato id 002 e a linha terá o seguinte formato:
 
  > 002çCNPJçNameçBusiness Area
