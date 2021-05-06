@@ -6,14 +6,6 @@ public class ValidationsUtil {
         return fileName.toLowerCase().endsWith(fileExtension);
     }
 
-    public static boolean isValidCpf(String cpf) {
-        return cpf.length() == 11;
-    }
-
-    public static boolean isValidCnpj(String cnpj) {
-        return cnpj.length() == 14;
-    }
-
     public static boolean isSalesman(String line) {
         return line.startsWith("001");
     }

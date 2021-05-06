@@ -1,5 +1,6 @@
 package br.com.agibank.directorywatcherservice.service;
 
+import br.com.agibank.directorywatcherservice.util.DirectoryUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +18,8 @@ import java.util.Map;
 
 @Service
 public class DirectoryWatcherService {
-    private String enviromentHomePath;
-    private String directoryEntrance;
+    private final String enviromentHomePath;
+    private final String directoryEntrance;
     private final WatchService watcherService;
     private final Map<WatchKey,Path> keys;
     private final Logger logger;
@@ -39,6 +40,7 @@ public class DirectoryWatcherService {
     @Scheduled(fixedDelay = Long.MAX_VALUE)
     private void startWatcher() throws IOException, InterruptedException {
         Path path = Paths.get(System.getenv(enviromentHomePath).concat(directoryEntrance));
+        DirectoryUtil.createDirectoryIfNotExist(path.toString());
         WatchKey key = path.register(watcherService, ENTRY_CREATE);
         keys.put(key, path);
         logger.info("Observando o diretório: {}", path);

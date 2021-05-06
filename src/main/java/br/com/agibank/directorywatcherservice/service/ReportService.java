@@ -1,12 +1,12 @@
 package br.com.agibank.directorywatcherservice.service;
 
 import br.com.agibank.directorywatcherservice.domain.SalesReport;
+import br.com.agibank.directorywatcherservice.util.DirectoryUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
 import java.io.PrintWriter;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
@@ -15,7 +15,7 @@ import java.util.Calendar;
 @Service
 public class ReportService {
 
-    private Logger logger = LoggerFactory.getLogger(ReportService.class);
+    private final Logger logger = LoggerFactory.getLogger(ReportService.class);
     private final String directoryOutput;
     private final String enviromentHomePath;
 
@@ -27,7 +27,7 @@ public class ReportService {
 
     public void createSalesReport(String fileName, SalesReport salesReport) {
         String path = System.getenv(enviromentHomePath).concat(directoryOutput);
-        createdDirectoryIfNotExist(path);
+        DirectoryUtil.createDirectoryIfNotExist(path);
         String fullPath = path + fileName.replace(".dat", ".done.dat");
         logger.info("Exportando análise dos dados de vendas para: {}", fullPath);
         try (PrintWriter writer = new PrintWriter(fullPath)) {
@@ -42,12 +42,5 @@ public class ReportService {
             logger.error("Ocorreu um erro ao exportar arquivo de análise de vendas ", e);
         }
         logger.info("Arquivo de análise de vendas exportado com sucesso.");
-    }
-
-    private void createdDirectoryIfNotExist(String path) {
-        File dir = new File(path);
-        if (!dir.exists()) {
-            dir.mkdir();
-        }
     }
 }

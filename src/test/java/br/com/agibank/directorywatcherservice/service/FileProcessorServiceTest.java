@@ -77,28 +77,28 @@ class FileProcessorServiceTest {
     }
 
     @Test
-    void mustBeSuccessfullyProcessedTheNameSalesmanWithÇ() {
-        String salesmanNameWithÇ = "001ç1234567891234çPedro Assunçãoç50000";
+    void mustBeSuccessfullyProcessedTheNameSalesmanWithCedilla() {
+        String salesmanNameWithCedilla = "001ç1234567891234çPedro Assunçãoç50000";
 
-        List<String> extractedDataRow = fileProcessorService.getDataRow(salesmanNameWithÇ, REGEX_SALESMAN);
+        List<String> extractedDataRow = fileProcessorService.getDataRow(salesmanNameWithCedilla, REGEX_SALESMAN);
 
         Assertions.assertEquals("Pedro Assunção", extractedDataRow.get(1));
     }
 
     @Test
-    void mustBeSuccessfullyProcessedTheNameCustomerWithÇ() {
-        String salesmanNameWithÇ = "002ç2345675434544345çMaria da ConceiçãoçRural";
+    void mustBeSuccessfullyProcessedTheNameCustomerWithCedilla() {
+        String salesmanNameWithCedilla = "002ç2345675434544345çMaria da ConceiçãoçRural";
 
-        List<String> extractedDataRow = fileProcessorService.getDataRow(salesmanNameWithÇ, REGEX_CUSTOMER);
+        List<String> extractedDataRow = fileProcessorService.getDataRow(salesmanNameWithCedilla, REGEX_CUSTOMER);
 
         Assertions.assertEquals("Maria da Conceição", extractedDataRow.get(1));
     }
 
     @Test
-    void mustBeSuccessfullyProcessedTheNameSaleWithÇ() {
-        String salesmanNameWithÇ = "003ç10ç[1-10-100,2-30-2.50,3-40-3.10]çGilberto Gonçalves";
+    void mustBeSuccessfullyProcessedTheNameSaleWithCedilla() {
+        String salesmanNameWithCedilla = "003ç10ç[1-10-100,2-30-2.50,3-40-3.10]çGilberto Gonçalves";
 
-        List<String> extractedDataRow = fileProcessorService.getDataRow(salesmanNameWithÇ, REGEX_SALE_ITEMS);
+        List<String> extractedDataRow = fileProcessorService.getDataRow(salesmanNameWithCedilla, REGEX_SALE_ITEMS);
 
         Assertions.assertEquals("Gilberto Gonçalves", extractedDataRow.get(2));
     }

@@ -5,6 +5,7 @@ import br.com.agibank.directorywatcherservice.domain.*;
 import br.com.agibank.directorywatcherservice.mapper.CustomerMapper;
 import br.com.agibank.directorywatcherservice.mapper.SaleMapper;
 import br.com.agibank.directorywatcherservice.mapper.SalesmanMapper;
+import br.com.agibank.directorywatcherservice.util.DirectoryUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +62,7 @@ public class FileProcessorService {
     @Scheduled(fixedDelay = Long.MAX_VALUE)
     private void initialFileProcessor() {
         Path path = Paths.get(System.getenv(enviromentHomePath).concat(directoryEntrance));
+        DirectoryUtil.createDirectoryIfNotExist(path.toString());
         File dir = new File(path.toString());
         File[] listFiles = dir.listFiles();
         if (listFiles != null) {

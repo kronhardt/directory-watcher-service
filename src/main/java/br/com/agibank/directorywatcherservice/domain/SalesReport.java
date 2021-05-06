@@ -76,7 +76,7 @@ public class SalesReport {
     public static Builder builder() { return new Builder(); }
 
     public static final class Builder {
-        private SalesReport salesReport;
+        private final SalesReport salesReport;
 
         private Builder() { salesReport = new SalesReport(); }
 
