@@ -61,6 +61,7 @@ public class FileProcessorService {
 
     @Scheduled(fixedDelay = Long.MAX_VALUE)
     private void initialFileProcessor() {
+        logger.info("Iniciando a leitura do diretório {}", directoryEntrance);
         Path path = Paths.get(System.getenv(enviromentHomePath).concat(directoryEntrance));
         DirectoryUtil.createDirectoryIfNotExist(path.toString());
         File dir = new File(path.toString());
@@ -75,6 +76,7 @@ public class FileProcessorService {
     public void fileProcessor(File file) {
         if (isFileExtensionExpected(file.getName(), DAT_EXTENSION)) {
             try {
+                logger.info("Iniciando o processamento do arquivo {}", file.getName());
                 salesReport = new SalesReport();
                 readFile(file.getAbsolutePath());
                 reportService.createSalesReport(file.getName(), salesReport);

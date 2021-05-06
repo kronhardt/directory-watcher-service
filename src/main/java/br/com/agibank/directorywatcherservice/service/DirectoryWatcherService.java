@@ -43,7 +43,7 @@ public class DirectoryWatcherService {
         DirectoryUtil.createDirectoryIfNotExist(path.toString());
         WatchKey key = path.register(watcherService, ENTRY_CREATE);
         keys.put(key, path);
-        logger.info("Observando o diretório: {}", path);
+        logger.info("Observando diretório: {}", path);
         processEvents();
     }
 
